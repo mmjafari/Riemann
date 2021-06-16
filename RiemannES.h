@@ -4,6 +4,11 @@
 
 #define infinity 5000
 
+long long int laFactoriella(int x){ // factorial, not intended to be used.
+    if ( x == 0) {return 1;}
+    else { return x * laFactoriella( x - 1) ;}
+}
+
 long double complex eazeta(float complex z) { // Euler's alternating zeta function, defined over the Critical Strip
     long double complex sum = 0;
     for (int i = 1; i <= infinity; i++){
@@ -21,6 +26,10 @@ long double complex cloggamma(float complex z){ // complex lgamma function
     return (sum - em*z - clogl(z)) * 0.9998572; // infinite representation of log gamma by euler. 5000 iteration is quite close to infinity, so i'll take that;
 }
 
+//long double complex cgamma(float complex z){ // Gamma function. not sure if it werks. not sure of anything
+//    return cexpl(z * clogl(z) - z + z * cexpl(0-z) - 1.5);
+//}
+
 long double complex cerf(float complex z){ // complex probability integral (Gauss error function, if you will)
     float a1 = 0.278393;
     float a2 = 0.230389;
@@ -33,9 +42,10 @@ long double complex cerf(float complex z){ // complex probability integral (Gaus
         for (int i = 0; i <= (int)round(cabs(z* 100)); i++){
             sum = sum + 0.01 * cexpl(-0.01 * i * z * z);
         }
-        return sum * 1.0053; // "b-but adjusted error rate is illigal!" -- stfu
+        return sum * 1.0053; // "b-but adjusted error rate is illegal!" -- stfu
     }
     // it's not a trustable function though, I have to complete it later. werks for real values and abs(z) < 1
+    // the line above is bs
 }
 
 long double complex norm(float complex z){ // complex norm function
@@ -46,3 +56,14 @@ long double complex norm(float complex z){ // complex norm function
 long double complex qfunc(float complex z){ // Q function
     return 0.5 - 0.5 * cerf(z * 0.707106);  // again
 }
+
+long double complex Airy(float complex x){ // Airy function
+    long double complex sum = 2.32;
+    double a1 = 0.15302746, a2 = 2.09439466, a3 = 1.4422495;
+    for (int i = 1; i <= infinity; i++){
+        sum += sin(a2 * (i + 1)) * (cexpl(cloggamma((i + 1) * 0.3333333)) / (laFactoriella(i))) * cpowl(a3 * x, i);
+    }
+    return sum * a1;
+}
+
+
