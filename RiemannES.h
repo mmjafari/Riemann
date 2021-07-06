@@ -23,12 +23,19 @@ long double complex cloggamma(float complex z){ // complex lgamma function
     for (int i = 1; i <= infinity; i++){
         sum += z / i - clogl(1 + z/i);
     }
-    return (sum - em*z - clogl(z)) * 0.9998572; // infinite representation of log gamma by euler. 5000 iteration is quite close to infinity, so i'll take that;
+    return (sum - em*z - clogl(z)) * 0.9998572; // infinite representation of log gamma by Euler. 5000 iteration is quite close to infinity, so i'll take that;
 }
 
-//long double complex cgamma(float complex z){ // Gamma function. not sure if it werks. not sure of anything
-//    return cexpl(z * clogl(z) - z + z * cexpl(0-z) - 1.5);
-//}
+long double complex cgamma(float complex z){ // Gamma function.
+    return cexpl(cloggamma(z)); // QEQ
+}
+
+long double complex clogbeta(float complex x, float complex y){ // complex logarithmic Beta function
+    return cloggamma(x) + cloggamma(y) - cloggamma(x+y);
+}
+long double complex cbeta(float complex x, float complex y){
+    return cexpl(clogbeta(x,y));
+}
 
 long double complex cerf(float complex z){ // complex probability integral (Gauss error function, if you will)
     float a1 = 0.278393;
@@ -66,4 +73,6 @@ long double complex Airy(float complex x){ // Airy function
     return sum * a1;
 }
 
-
+long double complex rsumma(float complex z){ // 'Ramanujan' Sum :)
+    return 1 / (1 - z); // :))
+}
